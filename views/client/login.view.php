@@ -1,8 +1,8 @@
 <?php require 'layout/top.php'; ?>
 <?php 
-    if(isset($_SESSION['user_data'])){
-        header('Location: /403');
-    }
+    // if(isset($_SESSION['user_data'])){
+    //     header('Location: /');
+    // }
 ?>
 <?php require 'layout/navbar.php'; ?>
 
@@ -72,6 +72,7 @@
                 processData: false,
                 contentType: false,
                 success: function (response) {
+                    console.log(response);
                     if (response.user_type === 'user') {
                         swal({
                             title: "Account Verified!",
@@ -81,6 +82,17 @@
                         })
                         .then(function() {
                             window.location.href = '/';
+                        });
+                    }
+                    else if (response.user_type === 'admin') {
+                        swal({
+                            title: "Account Verified!",
+                            text: "Login Successfully!",
+                            icon: "success",
+                            button: "Let's go!",
+                        })
+                        .then(function() {
+                            window.location.href = '/dashboard';
                         });
                     }
                    

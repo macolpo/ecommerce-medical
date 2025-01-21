@@ -22,6 +22,19 @@ $routes = [
     '/cart' => 'controller/client/cart.php',
     '/success' => 'controller/client/success.php',
     '/payment-success' => 'controller/client/payment.php',
+
+
+
+    // admin
+    '/dashboard' => 'controller/admin/dashboard.php',
+    '/manage-products' => 'controller/admin/manage-products.php',
+    '/manage-category' => 'controller/admin/manage-category.php',
+    
+    '/manage-orders' => 'controller/admin/manage-orders.php',
+
+
+
+
 ];
 
 if (array_key_exists($uri, $routes)){

@@ -2,11 +2,12 @@
 session_start();
 require('../conn.php');
 
-if(!isset($_SESSION['user_data']['user_id'])){
+if (!isset($_SESSION['user_data']['user_id']) || $_SESSION['user_data']['user_type'] !== 'user') {
     session_destroy();
     session_unset();
-    header('Location: /403'); exit();
-} else {
+    header('Location: /403');
+    exit();
+}  else {
     $user = $_SESSION['user_data']['user_id'];
 }
 

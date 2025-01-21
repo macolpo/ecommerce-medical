@@ -1,4 +1,5 @@
 <?php
+session_start();
 require('../conn.php');
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -59,8 +60,7 @@ function authRegister($conn) {
 
 
 function authLogin($conn) {
-    session_start();
-    $email = filter_input(INPUT_POST, 'email');
+    $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $password = $_POST['password'];
 
     if (!$email || !$password) {
@@ -68,7 +68,8 @@ function authLogin($conn) {
         return;
     }
 
-    $sqlAdmin = "SELECT * FROM users WHERE email=?";
+    $sqlAdmin = "SELECT * FROM admin_account WHERE email=?";
+    $sqlUser = "SELECT * FROM users WHERE email=?";
 
     try {
         // Check in admins table
@@ -82,16 +83,31 @@ function authLogin($conn) {
             if (password_verify($password, $row['password'])) {
                 // Admin user
                 $_SESSION['user_data'] = $row;
-                $_SESSION['user_type'] = 'user';
-                echo json_encode(["status" => "success", "user_type" => "user"]);
+                $_SESSION['user_type'] = 'admin';
+                echo json_encode(["success" => true, "user_type" => "admin"]);
                 exit();
             }
         }
+
+        $stmt = $conn->prepare($sqlUser);
+        $stmt->bind_param("s", $email);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if ($result->num_rows === 1) {
+            $row = $result->fetch_assoc();
+            if (password_verify($password, $row['password'])) {
+                $_SESSION['user_data'] = $row;
+                $_SESSION['user_type'] = 'user';
+                echo json_encode(["success" => true, "user_type" => "user"]);
+                exit();
+            } 
+        } 
 
         echo json_encode(["status" => false, "message" => "Invalid email or password"]);
         
     } catch (Exception $e) {
         echo json_encode(["status" => false, "message" => "An error occurred: " . $e->getMessage()]);
-    } 
+    }
 }
 
