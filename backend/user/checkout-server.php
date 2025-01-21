@@ -49,11 +49,10 @@ if ($_GET['action'] === "checkout") {
         }
 
         $transactionNumber = generateTransactionNumber();
-        $dateNow = date('Y-m-d H:i:s'); 
 
-        $insertQuery = $conn->prepare("INSERT INTO transaction_history (transaction_number, user_id, total_price, mop, created_at) 
+        $insertQuery = $conn->prepare("INSERT INTO transaction_history (transaction_number, user_id, total_price, mop) 
                                       VALUES (?, ?, ?, ?, ?)");
-        $insertQuery->bind_param('siiss', $transactionNumber, $user, $totalPrice, $paymentMethod, $dateNow);
+        $insertQuery->bind_param('siiss', $transactionNumber, $user, $totalPrice, $paymentMethod);
         $insertQuery->execute();
         $transactionId = $conn->insert_id;
 
@@ -66,9 +65,9 @@ if ($_GET['action'] === "checkout") {
             $price = $item['product_price']; 
             $productName = $item['product_name'];
 
-            $insertCartItemQuery = $conn->prepare("INSERT INTO transaction_details (transaction_id, product_id, qty, price, created_at) 
-                                                  VALUES (?, ?, ?, ?, ?)");
-            $insertCartItemQuery->bind_param('iiids', $transactionId, $productId, $qty, $price, $dateNow);
+            $insertCartItemQuery = $conn->prepare("INSERT INTO transaction_details (transaction_id, product_id, qty, price) 
+                                                  VALUES (?, ?, ?, ?)");
+            $insertCartItemQuery->bind_param('iiid', $transactionId, $productId, $qty, $price);
             $insertCartItemQuery->execute();
 
             $lineItems[] = [

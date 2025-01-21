@@ -9,7 +9,7 @@
         </div>
     </div>
     
-    <div class="container d-flex justify-content-center align-items-center" style="min-height: 70vh;">
+    <div class="container d-flex justify-content-center align-items-center mb-4" style="min-height: 70vh;">
         <div class="row px-5">
             <div class="d-flex gap-3">
                 <div class="col-lg-6 col-md-12 mb-3" data-aos="fade" data-aos-duration="3000">

@@ -117,13 +117,117 @@
                 </div>
             </div>
         </div>
+
+
+
+        <!-- cart -->
+        <div class="col-lg-12">
+            <div class="card mb-4">
+                <div class="card-body">
+                <h4 class="cart-title fw-bold">My Order</h4>
+                <div class="table-responsive mt-4">
+                    <table class="table  w-100" id="orderTable">
+                        <thead>
+                            <tr>
+                                <th>Transaction#</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ($orders as $order) : ?>
+                                <tr>
+                                    <td><?= $order['transaction_number'] ?></td>
+                                    <td><?= $order['status'] === 1 ? '<span class="badge bg-success px-3">Paid</span>' : ''; ?></td>
+                                    <td><?= date('M d Y h:i', strtotime($order['created_at'])) ?></td>
+                                    <td>
+                                    <a type="button" class="btn bg-primary-subtle btn-sm px-3 py-0" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $order['transaction_number'] ?>">
+                                        View Details
+                                    </a>
+                                    </td>
+                                </tr>
+                                <!-- modal -->
+                                <div class="modal fade" id="exampleModal<?= $order['transaction_number'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered modal-md">
+                                        <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Order Summary</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="p-3">
+                                            <h6><strong>Transaction Number:</strong> <?= htmlspecialchars($order['transaction_number']) ?></h6>
+                                            <h6>
+                                                <strong>Status:</strong> 
+                                                <?= $order['status'] === 1 ? '<span class="badge bg-success">Paid</span>' : '<span class="badge bg-warning">Pending</span>'; ?>
+                                            </h6>
+
+                                            <div class="mt-5">
+                                                <?php
+                                                // Fetch product details for the current transaction
+                                                $sqlDetails = "SELECT products.product_name, transaction_details.qty, transaction_details.price 
+                                                            FROM transaction_details 
+                                                            JOIN products ON transaction_details.product_id = products.product_id
+                                                            WHERE transaction_id = ?";
+                                                $stmtDetails = $conn->prepare($sqlDetails);
+                                                $stmtDetails->bind_param("i", $order['transaction_id']);
+                                                $stmtDetails->execute();
+                                                $detailsResult = $stmtDetails->get_result();
+                                                $total = 0;
+
+                                                while ($detail = $detailsResult->fetch_assoc()) :
+                                                    $subtotal = $detail['qty'] * $detail['price'];
+                                                    $total += $subtotal;
+                                                ?>
+                                                <div class="border-top py-2">
+                                                    <div class="d-flex justify-content-between">
+                                                        <div><strong>Product:</strong> <?= htmlspecialchars($detail['product_name']) ?></div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div><strong>Price:</strong> ₱<?= number_format($detail['price'], 2) ?></div>
+                                                        <div><strong>Qty:</strong> <?= htmlspecialchars($detail['qty']) ?></div>
+                                                    </div>
+                                                    <div class="d-flex justify-content-between">
+                                                        <div><strong>Subtotal:</strong> ₱<?= number_format($subtotal, 2) ?></div>
+                                                    </div>
+                                                </div>
+                                                <?php endwhile; ?>
+                                            </div>
+
+                                            <div class="mt-3 border-top pt-3">
+                                                <div class="d-flex justify-content-between">
+                                                    <div><strong>Total:</strong></div>
+                                                    <div class="fw-bold">₱<?= number_format($total, 2) ?></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </tbody>
+
+                    </table>
+                </div>
+                
+
+
+                </div>
+            </div>
+        </div>
     </div>
   </div>
 </section>
 
 <script>
     $(document).ready(function () {
-        
+        $('#orderTable').DataTable();
     });
 </script>
 

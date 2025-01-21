@@ -13,5 +13,17 @@ if ($result->num_rows > 0) {
     header('Location: /403');
 }
 
+// order
+$sqlOrder = "SELECT * FROM transaction_history
+JOIN transaction_details ON transaction_history.transaction_id = transaction_details.transaction_id
+JOIN products ON transaction_details.product_id = products.product_id
+WHERE user_id = ? AND status != 0
+GROUP BY transaction_history.transaction_id
+";
+$stmt = $conn->prepare($sqlOrder);
+$stmt->bind_param("i", $user);
+$stmt->execute();
+$orders  = $stmt->get_result();
+
 require "views/client/profile.view.php";
 
