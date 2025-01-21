@@ -20,7 +20,8 @@ $routes = [
     '/product' => 'controller/client/product.php',
     '/product-details' => 'controller/client/product-details.php',
     '/cart' => 'controller/client/cart.php',
-
+    '/success' => 'controller/client/success.php',
+    '/payment-success' => 'controller/client/payment.php',
 ];
 
 if (array_key_exists($uri, $routes)){

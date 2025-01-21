@@ -1,5 +1,5 @@
 <?php 
-$title = " - Home";
+$title = " - Login";
 
 require "views/client/login.view.php";
 

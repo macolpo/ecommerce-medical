@@ -1,5 +1,8 @@
 <?php require 'layout/top.php'; ?>
-<?php require 'layout/navbar.php'; ?>
+<?php require 'layout/navbar.php';
+    unset($_SESSION['transactionId']);
+    unset($_SESSION['checkoutSessionId']);
+?>
 
 <!-- Hero -->
 <section class="py-5 d-flex justify-content-center align-items-center" id="hero" style="min-height: 50vh;">
@@ -18,7 +21,7 @@
                 </div>
             </div>
             <div class="py-5" data-aos="fade-right" data-aos-duration="3000">
-                <a class="btn btn-outline-light<?= urlIs('/product') ? 'active' : '' ?>" href="/product">Shop Now</a>
+                <a class="btn btn-outline-dark<?= urlIs('/product') ? 'active' : '' ?>" href="/product">Shop Now</a>
             </div>
         </div>
     </div>

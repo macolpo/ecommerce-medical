@@ -90,12 +90,11 @@
                         productHTML += `
                             <div class="col-lg-3 col-md-4 col-sm-12 mb-3 card-product">
                                 <div class="card border-0 shadow card-product-hover">
-                                    <div class="product-carousel">
+                                    <div class="product-carousel border-bottom">
                                         <img src="img/products/${product.product_img}" height="250" class="mx-auto w-100" alt="${product.product_name}">
                                     </div>
                                     <div class="card-body text-center">
                                         <h6 class="card-title">${product.product_name}</h6>
-                                        <p class="card-subtitle"><small>${product.product_color}</small></p>
                                         <p class="card-text"><small>₱${product.product_price}</small></p>
                                     </div>
                                 </div>
@@ -130,9 +129,8 @@
         var search = $('#search').val().toLowerCase();  
         $('#productList .col-lg-3').each(function() {
             var productName = $(this).find('.card-title').text().toLowerCase();  
-            var productColor = $(this).find('.card-subtitle').text().toLowerCase();  
 
-            if (productName.indexOf(search) !== -1 || productColor.indexOf(search) !== -1) {
+            if (productName.indexOf(search) !== -1) {
                 $(this).show(); 
             } else {
                 $(this).hide();

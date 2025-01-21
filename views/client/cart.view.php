@@ -3,6 +3,9 @@
     if(!isset($_SESSION['user_data'])){
         header('Location: /403');
     }
+    // unset when back to shop
+    unset($_SESSION['transactionId']);
+    unset($_SESSION['checkoutSessionId']);
 ?>
 <?php require 'layout/navbar.php'; ?>
 
@@ -25,13 +28,12 @@
                     <hr class="my-4">
                     
                     <!-- Cart Items -->
-                    <div style="max-height:45vh; overflow:auto;">
+                    <div class="d-flex align-items-center row" style="max-height:45vh; overflow:auto;">
                       <div id="cartItem"></div>
                     </div>
                     <!-- End Cart Items -->
 
                     <div class="py-3">
-                      <hr>
                       <h6 class="mb-0"><a href="/product" class="text-body"><i class="fas fa-long-arrow-alt-left"></i> Back to shop</a></h6>
                     </div>
                   </div>
@@ -43,27 +45,28 @@
                     <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
                     <hr class="my-4">
 
-                    <div class="d-flex justify-content-between mb-4">
-                      <h5 class="text-uppercase">Items (3)</h5>
-                      <h5>€ 132.00</h5>
-                    </div>
-
-                    <h5 class="text-uppercase mb-3">Shipping</h5>
-                    <div class="d-flex justify-content-between mb-4">
-                      <h5 class="text-uppercase">Shipping cost</h5>
-                      <h5>€ 5.00</h5>
+                    <!-- summary -->
+                    <div class="d-flex align-items-center mb-4 row" id="cartSummary">
                     </div>
 
                     <hr class="my-4">
 
                     <div class="d-flex justify-content-between mb-5">
                       <h5 class="text-uppercase">Total price</h5>
-                      <h5>€ 137.00</h5>
+                      <h5 class="totalPrice"></h5>
                     </div>
+                    <form id="paymentForm" class="mb-5">
+                        <div class="form-check d-flex justify-content-between align-items-center mb-3">
+                            <input class="form-check-input" type="radio" name="paymentMethod"
+                                id="gcash" value="paymongo" required>
+                            <label class="form-check-label" for="gcash">
+                                <img src="https://ui.paymongo.com/logo.png"
+                                    alt="GCASH" class="img-fluid w-100 rounded-5 ms-2" style="cursor: pointer;">
+                            </label>
+                        </div>
+                      <button type="button" class="btn btn-success btn-block btn-lg mb-3 w-100" onclick="checkout()">Checkout</button>
+                    </form>
 
-                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-dark btn-block btn-lg" data-mdb-ripple-color="dark">
-                      CHECKOUT
-                    </button>
                   </div>
                 </div>
 
@@ -91,33 +94,45 @@ function cartItem() {
         dataType: 'json',
         success: function(response) {
             var productListHtml = '';
+            var productSummaryHtml = '';
             var overallTotalPrice = 0; 
 
             response.products.forEach(function(product) {
               if (product.product_name != null && product.product_price != null && product.cart_quantity != null) {
                   productListHtml += `
-                    <div class="d-flex justify-content-center align-items-center">
-                        <div class="col-lg-3 col-md-3 mb-3">
-                            <img src="img/products/${product.product_img}" class="img-fluid rounded-3 w-100" alt="Cotton T-shirt">
+                      <div class="row">
+                        <div class="col-lg-3 col-md-3 col-sm-12 mb-3">
+                            <img src="img/products/${product.product_img}" class="img-fluid rounded-3 w-100" alt="">
                         </div>
-                        <div class="col-lg-3 col-md-3 text-center">
+                        <div class="col-lg-3 col-md-3 col-sm-12 d-flex align-items-center justify-content-center">
                             <h6 class="mb-0 fw-semibold">${product.product_name}</h6>
-                            <h6 class="text-muted">${product.product_color}</h6>
-                            <h6 class="text-muted">Size: ${product.product_size}</h6>
                         </div>
                         <div class="col-lg-2 col-md-2 d-flex align-items-center justify-content-center">
                             <button onclick="addItem('${product.product_id}')" class="btn"><i class="bi bi-plus-lg"></i></button> 
                                 ${product.cart_quantity} 
                             <button onclick="minusItem('${product.product_id}')" class="btn"><i class="bi bi-dash-lg"></i></button>
                         </div>
-                        <div class="col-lg-2 col-md-2">
+                        <div class="col-lg-2 col-md-2 d-flex align-items-center justify-content-center">
                             <h6>₱ ${parseFloat(product.product_price).toFixed(2)}</h6>
                         </div>
-                        <div class="col-lg-2 col-md-2">
-                            <a href="#" onclick="deleteBtn('${product.product_id}')" class="text-muted"><i class="bi bi-x-lg text-danger"></i></a>
+                        <div class="col-lg-2 col-md-2 d-flex align-items-center justify-content-center">
+                            <a href="#" onclick="removeItem('${product.product_id}')" class="text-muted"><i class="bi bi-x-lg text-danger"></i></a>
                         </div>
-                    </div>
+                      </div>
                     <hr>
+                  `;
+                  
+                  productSummaryHtml += `
+                    <div class="col-12 mb-3">
+                      <div class="d-flex justify-content-between">
+                        <div class="col-lg-6 col-md-6 col-sm-6">
+                          <h6 class="text-uppercase">${product.product_name} (${product.cart_quantity})</h6>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 text-end">
+                          <h6>₱ ${(parseFloat(product.product_price) * parseInt(product.cart_quantity)).toFixed(2)}</h6>
+                        </div>
+                      </div>
+                    </div>
                   `;
 
                   // Calculate the overall total price
@@ -125,18 +140,16 @@ function cartItem() {
               }
             });
 
-            // Update the HTML of the cart list
             $('#cartItem').html(productListHtml);
+            $('#cartSummary').html(productSummaryHtml);
 
-            // Update total price and checkout button visibility
             if (overallTotalPrice === 0 || isNaN(overallTotalPrice)) {
-              $('#cartBtn').html(``);
-              $('#totalPrice').html('');
+              $('#paymentForm').hide();
+              $('.totalPrice').html('₱ 0.00');
+              $('.btn-dark').attr('disabled', true); 
             } else {
-              $('#totalPrice').html('Total: ₱ ' + overallTotalPrice.toFixed(2));
-              $('#cartBtn').html(`
-                <a href="/cart" class="btn btn-warning rounded-5 text-dark  text-decoration-none w-100 fw-semibold">View Cart</a>
-              `);
+              $('.totalPrice').html('₱ ' + overallTotalPrice.toFixed(2));
+              $('.btn-dark').attr('disabled', false); 
             }
         },
         error: function(xhr, status, error) {
@@ -144,6 +157,7 @@ function cartItem() {
         }
     });
 }
+
 
 function countCartItem() { 
   $.ajax({
@@ -189,17 +203,46 @@ function minusItem(productId) {
       
     });
 }
+
 function removeItem(productId){
   $.ajax({
       type: "POST",
       url: "backend/user/product-server.php?action=deleteCart&product_id=" + productId,
       dataType: "json",
       success: function (response) {
+        cartItem();
         cartList();
         countCartList();
       },
       error: function(xhr, status, error) {
           console.log(error);
+      }
+  });
+
+}
+
+
+function checkout() {
+
+  var paymentMethod = $('input[name="paymentMethod"]:checked').val();
+
+  if (!paymentMethod) {
+      swal('Oops..','Please select a payment method before proceeding!','error');
+      return;
+  }
+
+  $.ajax({
+      type: 'POST',
+      url: 'backend/user/checkout-server.php?action=checkout',
+      data: {
+          paymentMethod: paymentMethod
+      },
+      success: function(response) {
+          console.log(response);
+          window.location.href = response.direct;
+      },
+      error: function(error) {
+          console.error('Error:', error);
       }
   });
 

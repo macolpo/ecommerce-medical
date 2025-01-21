@@ -9,36 +9,13 @@ if(!isset($_SESSION['user_data']['user_id'])){
 } else {
     $user = $_SESSION['user_data']['user_id'];
 } 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['action']) && !empty($_GET['action'])) {
 
-
-        // product size
-        if ($_GET['action'] === 'productSize') {
-            $productname = $_POST['productname'];
-            $size = $_POST['size'];
-            $color = $_POST['color'];
-
-            $sql = "SELECT * FROM products WHERE product_name = '$productname' AND product_size = '$size' AND product_color = '$color'" ;
-            $result = $conn->query($sql);
-        
-            // Prepare the data to be sent as JSON
-            $data = array();
-            if ($result->num_rows > 0) {
-                if ($row = $result->fetch_assoc()) {
-                    $data[] = $row;
-                }
-            }
-        
-            echo json_encode($data);
-
-        }
-
         // // cart
         if ($_GET['action'] === 'formCart') {
-            $id = $_POST['product_id'];
-        
+            $product_id = $_POST['product_id'];
+            $id = encryptor('decrypt', $product_id);
             try {
                 // Fetch the product details
                 $stmt = $conn->prepare("SELECT * FROM products WHERE product_id = ?");
@@ -81,8 +58,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         p.product_id,
                         p.product_name,
                         p.product_price,
-                        p.product_size,
-                        p.product_color,
                         p.product_img,
                         c.cart_quantity
                     FROM cart c
@@ -253,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $query = "SELECT * FROM products GROUP BY product_name;";
             } else {
                 $id = encryptor('decrypt', $catId);
-                $query = "SELECT * FROM products WHERE category_id = ? GROUP BY product_color";
+                $query = "SELECT * FROM products WHERE category_id = ?";
             }
             if ($stmt = $conn->prepare($query)) {
                 if ($catId !== "all") {
