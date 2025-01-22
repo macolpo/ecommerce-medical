@@ -3,7 +3,7 @@ session_start();
 header('Content-Type: application/json');
 require('../conn.php');
 
-if(!isset($_SESSION['user_data']['user_id'])){
+if (!isset($_SESSION['user_data']['user_id']) || $_SESSION['user_type'] !== 'user') {
     session_destroy();
     session_unset();
 } else {

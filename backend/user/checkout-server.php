@@ -5,7 +5,7 @@ require('../conn.php');
 require('../../vendor/autoload.php');
 
 // Check if user is authenticated
-if (!isset($_SESSION['user_data']['user_id'])) {
+if (!isset($_SESSION['user_data']['user_id']) || $_SESSION['user_type'] !== 'user') {
     session_destroy();
     session_unset();
     echo json_encode(['error' => 'Unauthenticated']);

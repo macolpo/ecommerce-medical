@@ -34,7 +34,7 @@
           <div class="d-flex align-items-center gap-3 mt-2 mb-2">
             
 
-            <?php if(!isset($_SESSION['user_data'])): ?>
+            <?php if(!isset($_SESSION['user_data']['user_id']) || $_SESSION['user_type'] !== 'user'): ?>
             <a class="px-3 py-2 rounded-circle hvr-fade" href="/login"><i class="bi bi-person-circle fs-5"></i></a>
             <!-- cart btn -->
             <a class="" type="button" data-bs-toggle="offcanvas" data-bs-target="#staticBackdrop" aria-controls="staticBackdrop">
