@@ -29,13 +29,18 @@
 
   <!-- orders -->
   <li class="nav-item">
-    <a class="nav-link <?= urlIs('/manage-orders') ? '' : 'collapsed' ?>" data-bs-target="#order-nav" data-bs-toggle="collapse" href="#">
+    <a class="nav-link <?= urlIs('/manage-orders') || urlIs('/manage-arrived-orders') ? '' : 'collapsed' ?>" data-bs-target="#order-nav" data-bs-toggle="collapse" href="#">
       <i class="bi bi-cart-fill"></i><span>Orders</span><i class="bi bi-chevron-down ms-auto"></i>
     </a>
-    <ul id="order-nav" class="nav-content collapse <?= urlIs('/manage-orders') ? 'show' : '' ?>" data-bs-parent="#sidebar-nav">
+    <ul id="order-nav" class="nav-content collapse <?= urlIs('/manage-orders') || urlIs('/manage-arrived-orders') ? 'show' : '' ?>" data-bs-parent="#sidebar-nav">
       <li>
         <a href="/manage-orders" class="<?= urlIs('/manage-orders') ? 'active' : '' ?>">
           <i class="bi bi-circle"></i><span>Manage Orders</span>
+        </a>
+      </li>
+      <li>
+        <a href="/manage-arrived-orders" class="<?= urlIs('/manage-arrived-orders') ? 'active' : '' ?>">
+          <i class="bi bi-circle"></i><span>Manage Arrived Orders</span>
         </a>
       </li>
     </ul>

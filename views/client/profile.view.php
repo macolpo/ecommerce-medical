@@ -129,18 +129,20 @@
                     <table class="table  w-100" id="orderTable">
                         <thead>
                             <tr>
+                                <th>Date</th>
                                 <th>Transaction#</th>
                                 <th>Status</th>
-                                <th>Date</th>
+                                <th>Ongoing</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($orders as $order) : ?>
                                 <tr>
+                                    <td><?= date('M d Y h:i', strtotime($order['created_at'])) ?></td>
                                     <td><?= $order['transaction_number'] ?></td>
                                     <td><?= $order['status'] === 1 ? '<span class="badge bg-success px-3">Paid</span>' : ''; ?></td>
-                                    <td><?= date('M d Y h:i', strtotime($order['created_at'])) ?></td>
+                                    <td><?= $order['action'] === 1 ? '<span class="badge bg-success px-3">Arrvied</span>' : '<span class="badge bg-warning px-3">Ongoing</span>'; ?></td>
                                     <td>
                                     <a type="button" class="btn bg-primary-subtle btn-sm px-3 py-0" data-bs-toggle="modal" data-bs-target="#exampleModal<?= $order['transaction_number'] ?>">
                                         View Details

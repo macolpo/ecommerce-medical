@@ -31,6 +31,7 @@ $routes = [
     '/manage-category' => 'controller/admin/manage-category.php',
     
     '/manage-orders' => 'controller/admin/manage-orders.php',
+    '/manage-arrived-orders' => 'controller/admin/manage-arrived-orders.php',
 
 
 

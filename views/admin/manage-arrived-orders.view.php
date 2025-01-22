@@ -2,12 +2,12 @@
 <main id="main" class="main">
 
 <div class="pagetitle">
-  <h1>Manage Order</h1>
+  <h1>Manage Arrived Order</h1>
   <nav class="d-flex justify-content-between">
   <div>
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
-        <li class="breadcrumb-item active">Manage Order</li>
+        <li class="breadcrumb-item active">Manage Arrived Order</li>
       </ol>
     </div>
     <div class="mb-1">
@@ -73,7 +73,7 @@
               </div>
               
               <div class="table-responsive">
-                  <table class="table w-100" id="orderDetailsTable">
+                  <table class="table w-100 text-nowrap" id="orderDetailsTable">
                       <thead>
                           <tr class="text-center">
                               <th class="border-bottom pb-2">Product</th>
@@ -106,7 +106,7 @@
     var table = $('#orderTable').DataTable({
       "ajax": {
         type: 'POST',
-        url: 'backend/admin/order-server.php?action=fetchData',
+        url: 'backend/admin/order-server.php?action=fetchArrivedOrders',
         dataSrc: ''
       },
       "columns": [
@@ -141,57 +141,7 @@
   });
 
 
-
-function updateOrder(id) {
-    console.log(id);
-
-    swal({
-        title: "Are you sure?",
-        text: "This order is already arrived?",
-        icon: "warning",
-        buttons: ["Cancel", "Yes, update it!"],
-        dangerMode: true,  // Red button for danger mode
-    })
-    .then((ok) => {
-        if (ok) {
-            // Proceed with the update if confirmed
-            $.ajax({
-                type: 'POST',
-                url: 'backend/admin/order-server.php?action=updateOrder',
-                data: {transaction_id: id},
-                success: function(response) {
-                    swal(
-                        'Updated!',
-                        'Your order has been updated.',
-                        'success'
-                    );
-                    $('#orderTable').DataTable().ajax.reload();
-                },
-                error: function(xhr, status, error) {
-                    // Handle error
-                    swal(
-                        'Error!',
-                        'There was an issue updating the order.',
-                        'error'
-                    );
-                }
-            });
-        } else {
-            // If the user clicks "Cancel", show this message
-            swal({      
-                title: "Okay!",
-                text: "Your order is still ongoing.",
-                icon: "info"
-            });
-        }
-    });
-}
-
-
-
-
   function viewOrder(id){
-    console.log(id);
     $('#viewModal').modal('show');
     $.ajax({
       type: 'POST',
