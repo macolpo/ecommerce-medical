@@ -225,10 +225,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $catId = $_POST['filter'];
 
             if ($catId === "all") {
-                $query = "SELECT * FROM products GROUP BY product_name;";
+                $query = "SELECT * FROM products WHERE product_quantity != 0 GROUP BY product_name;";
             } else {
                 $id = encryptor('decrypt', $catId);
-                $query = "SELECT * FROM products WHERE category_id = ?";
+                $query = "SELECT * FROM products WHERE product_quantity != 0 AND category_id = ?";
             }
             if ($stmt = $conn->prepare($query)) {
                 if ($catId !== "all") {
