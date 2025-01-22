@@ -1,3 +1,3 @@
 # ecommerce-shoes
-# commissioned project
+commissioned project
  
