@@ -1,5 +1,6 @@
-# ecommerce-medical
-![Home Page](asset/prod/homepage.png)
-![Home Page](asset/prod/homepage1.png)
+# Ecommerce-medical
 
-# products
+<img src="asset/prod/homepage.png" alt="Home Page" width="300"/>
+<img src="asset/prod/homepage1.png" alt="Home Page" width="300"/>
+
+# Products
