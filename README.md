@@ -12,7 +12,7 @@
   <img src="asset/prod/homeproductdetails.png" alt=""/>
 </div>
 
-# Login and Register
+# Login & Register
 <div style="display: flex; justify-content: space-around;">
   <img src="asset/prod/homelogin.png" alt=""/>
   <img src="asset/prod/homeregister.png" alt=""/>
@@ -42,7 +42,7 @@
     <img src="asset/prod/userprofilestatusorder.png" alt=""/>
 </div>
 
-# API
+# Paymongo API
 <div style="display: flex; justify-content: space-around;">
     <img src="asset/prod/paymongolink.png" alt=""/>
     <img src="asset/prod/paymongoapi.png" alt=""/>
