@@ -47,12 +47,13 @@ if ($_GET['action'] === "checkout") {
             echo json_encode(['error' => 'Your cart is empty. Please add products before checkout.']);
             exit;
         }
+        $action = 0;
 
         $transactionNumber = generateTransactionNumber();
 
-        $insertQuery = $conn->prepare("INSERT INTO transaction_history (transaction_number, user_id, total_price, mop) 
+        $insertQuery = $conn->prepare("INSERT INTO transaction_history (transaction_number, user_id, total_price, mop, action) 
                                       VALUES (?, ?, ?, ?, ?)");
-        $insertQuery->bind_param('siiss', $transactionNumber, $user, $totalPrice, $paymentMethod);
+        $insertQuery->bind_param('siiss', $transactionNumber, $user, $totalPrice, $paymentMethod, $action);
         $insertQuery->execute();
         $transactionId = $conn->insert_id;
 
