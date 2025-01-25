@@ -1,5 +1,5 @@
 # Ecommerce-medical
-<div style="display: flex; justify-content: space-around;">
+<div style="display: flex; justify-content: space-evenly;">
   <img src="asset/prod/homepage.png" alt="" width="400"/>
   <img src="asset/prod/homepage1.png" alt="" width="400"/>
   <img src="asset/prod/homeabout.png" alt="" width="400"/>
