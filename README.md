@@ -4,10 +4,8 @@
   <img src="asset/prod/homepage1.png" alt="" width="300"/>
 </div>
 
-# About
+# About & Contact
   <img src="asset/prod/homeabout.png" alt="" width="300"/>
-
-# Contact
   <img src="asset/prod/homecontact.png" alt="" width="300"/>
 
 # Products
@@ -44,4 +42,10 @@
     <img src="asset/prod/dordersupdate1.png" alt="" width="300"/>
     <img src="asset/prod/dordersarrived.png" alt="" width="300"/>
     <img src="asset/prod/userprofilestatusorder.png" alt="" width="300"/>
+</div>
+
+# API
+<div style="display: flex; justify-content: space-around;">
+    <img src="asset/prod/paymongolink.png" alt="" width="300"/>
+    <img src="asset/prod/paymongoapi.png" alt="" width="300"/>
 </div>
