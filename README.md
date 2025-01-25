@@ -1,9 +1,9 @@
 # Ecommerce-medical
 <div style="display: flex; justify-content: space-around;">
-  <img src="asset/prod/homepage.png" alt="" width="500"/>
-  <img src="asset/prod/homepage1.png" alt="" width="500"/>
-  <img src="asset/prod/homeabout.png" alt="" width="500"/>
-  <img src="asset/prod/homecontact.png" alt="" width="500"/>
+  <img src="asset/prod/homepage.png" alt="" width="450"/>
+  <img src="asset/prod/homepage1.png" alt="" width="450"/>
+  <img src="asset/prod/homeabout.png" alt="" width="450"/>
+  <img src="asset/prod/homecontact.png" alt="" width="450"/>
 </div>
 
 # Products
