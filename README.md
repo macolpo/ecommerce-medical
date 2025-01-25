@@ -6,10 +6,6 @@
   <img src="asset/prod/homecontact.png" alt="" width="500"/>
 </div>
 
-# About & Contact
-  <img src="asset/prod/homeabout.png" alt="" width="300"/>
-  <img src="asset/prod/homecontact.png" alt="" width="300"/>
-
 # Products
 <div style="display: flex; justify-content: space-around;">
   <img src="asset/prod/homeproduct.png" alt="" width="300"/>
