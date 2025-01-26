@@ -29,6 +29,7 @@
     <img src="asset/prod/userpaymentconfirm.png" alt=""/>
     <img src="asset/prod/userpaymentprocess.png" alt=""/>
     <img src="asset/prod/userpaymentsuccess.png" alt=""/>
+    <img src="asset/prod/userprofilestatusorder.png" alt=""/>
 </div>
 
 # Admin
@@ -39,7 +40,6 @@
     <img src="asset/prod/dordersupdate.png" alt=""/>
     <img src="asset/prod/dordersupdate1.png" alt=""/>
     <img src="asset/prod/dordersarrived.png" alt=""/>
-    <img src="asset/prod/userprofilestatusorder.png" alt=""/>
 </div>
 
 # Paymongo API
