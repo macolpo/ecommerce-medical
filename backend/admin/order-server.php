@@ -6,7 +6,6 @@ require('../conn.php');
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_GET['action']) && !empty($_GET['action'])) {
 
-        // get all category
         if($_GET["action"] === "fetchData"){
 
             $query = "SELECT * FROM transaction_history JOIN users ON transaction_history.user_id = users.user_id WHERE transaction_history.action = 0 AND transaction_history.status = 1";
@@ -57,7 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $transaction_id = isset($_POST['transaction_id']) ? $_POST['transaction_id'] : 0;
             $status = 1;
             
-            // Step 1: Fetch transaction details (product_id, qty)
             $transaction_query = "SELECT product_id, qty FROM transaction_details WHERE transaction_id = ?";
             if ($stmt = $conn->prepare($transaction_query)) {
                 $stmt->bind_param("i", $transaction_id);
@@ -67,13 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 if ($stmt->num_rows > 0) {
                     $stmt->bind_result($product_id, $qty);
                     while ($stmt->fetch()) {
-                        // Step 2: Update the quantity in the products table
                         $update_product_query = "UPDATE products SET product_quantity = product_quantity - ? WHERE product_id = ?";
                         if ($update_stmt = $conn->prepare($update_product_query)) {
                             $update_stmt->bind_param("ii", $qty, $product_id);
                             $update_stmt->execute();
                             
-                            // Check if the product stock update was successful
                             if ($update_stmt->affected_rows !== 1) {
                                 echo json_encode(['status' => 'error', 'message' => 'Failed to update product stock']);
                                 exit;
@@ -85,7 +81,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit;
                 }
                 
-                // Step 3: Update the transaction history action
                 $query = "UPDATE transaction_history SET action = ? WHERE transaction_id = ?";
                 if ($stmt = $conn->prepare($query)) {
                     $stmt->bind_param("si", $status, $transaction_id);
