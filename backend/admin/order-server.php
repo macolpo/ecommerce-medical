@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // get all category
         if($_GET["action"] === "fetchData"){
 
-            $query = "SELECT * FROM transaction_history JOIN users ON transaction_history.user_id = users.user_id WHERE transaction_history.action = 0";
+            $query = "SELECT * FROM transaction_history JOIN users ON transaction_history.user_id = users.user_id WHERE transaction_history.action = 0 AND transaction_history.status = 1";
             if ($stmt = $conn->prepare($query)) {
                
                 $stmt->execute();
